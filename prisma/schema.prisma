@@ -23,7 +23,7 @@ model User {
   role          UserRole @default(USER)
   accounts      Account[]
   isTwoFactorEnabled Boolean @default(false)
-  created  DateTime?
+  twoFactorConfirmation TwoFactorConfirmation[]
 }
 
 model Account {
@@ -44,3 +44,42 @@ model Account {
 
   @@unique([provider, providerAccountId])
 }
+
+model PasswordResetToken {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+
+model VerificationToken {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+
+model TwoFactorToken {
+  id    String    @id @default(auto()) @map("_id") @db.ObjectId
+  email String
+  token String @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String @db.ObjectId 
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+

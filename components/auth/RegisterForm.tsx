@@ -23,6 +23,7 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import { register } from "@/actions/register";
+import { ClipLoader } from "react-spinners";
 
 const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>()
@@ -131,7 +132,7 @@ const RegisterForm = () => {
             type="submit"
             className="w-full"
           >
-            Create an account
+            {isPending ? < ClipLoader /> : "Create an account"}
           </Button>
         </form>
       </Form>

@@ -22,8 +22,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
+import { useSearchParams } from "next/navigation";
+import { ClipLoader } from "react-spinners";
 
 const LoginForm = () => {
+    const SearchParams = useSearchParams()
+    const urlError = SearchParams.get("error") === "OAuthAccountNotLinked" ? "Email already use with different provider!" : ""
+
     const [error, setError] = useState<string | undefined>()
     const [success, setSuccess] = useState<string | undefined>()
     const [isPending , startTransition] = useTransition()
@@ -42,9 +47,16 @@ const LoginForm = () => {
     startTransition(() => {
         login(values)
         .then((data) => {
+
+        if(data?.error){
             setError(data.error)
+        }
+
+        if(data?.success){
             setSuccess(data.success)
+        }
         })
+        .catch(() => setError("Something went wrong"));
     })
   }
   return (
@@ -104,13 +116,9 @@ const LoginForm = () => {
               />
             </>
           </div>
-          <FormError message={error || undefined} />
-        <FormSuccess message={success || undefined} />
-          <Button
-              disabled={isPending}
-            type="submit"
-            className="w-full"
-          >
+          <FormError message={error || urlError} />
+          <FormSuccess message={success || undefined} />
+          <Button disabled={isPending} type="submit" className="w-full p-2">
             Login
           </Button>
         </form>
