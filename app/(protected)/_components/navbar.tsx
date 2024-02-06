@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-// import { UserButton } from "@/components/auth/user-button";
+import UserButton from "@/components/auth/user-button";
 
 export const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-secondary flex justify-between items-center p-4 rounded-xl w-[600px] shadow-sm">
+    <nav className="bg-secondary flex justify-between items-center p-4 rounded-xl w-[600px] mx-auto shadow-sm gap-10">
       <div className="flex justify-between gap-10 flex-grow items-center">
         <Button 
           asChild
@@ -45,7 +45,7 @@ export const Navbar = () => {
           </Link>
         </Button>
       </div>
-      {/* <UserButton /> */}
+      <UserButton />
     </nav>
   );
 };
